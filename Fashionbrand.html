@@ -1,0 +1,2643 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#11110f" />
+  <title>Aza Fashions — Dress Beyond Ordinary</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #11110f;
+      --surface: #181815;
+      --surface-2: #20201c;
+      --text: #f2eee6;
+      --muted: #aaa59a;
+      --line: rgba(242,238,230,.14);
+      --accent: #d9c5a2;
+      --white: #fffdf8;
+      --ease: cubic-bezier(.16,1,.3,1);
+      --max: 1320px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Manrope", sans-serif;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      color: inherit;
+    }
+
+    .container {
+      width: min(calc(100% - 48px), var(--max));
+      margin: 0 auto;
+    }
+
+    /* =========================
+       PRELOADER
+    ========================= */
+
+    .preloader {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 9999;
+      display: grid;
+      place-items: center;
+      transition: opacity .8s var(--ease), visibility .8s;
+    }
+
+    .preloader.done {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loader-inner {
+      width: min(300px, 75vw);
+    }
+
+    .loader-top {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      font-family: "DM Mono", monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .18em;
+      color: var(--muted);
+    }
+
+    .loader-bar {
+      height: 1px;
+      background: var(--line);
+      overflow: hidden;
+    }
+
+    .loader-progress {
+      height: 100%;
+      width: 0;
+      background: var(--white);
+      transition: width .1s linear;
+    }
+
+    /* =========================
+       NAVIGATION
+    ========================= */
+
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      padding: 20px 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(17,17,15,.92),
+        rgba(17,17,15,.35),
+        transparent
+      );
+      backdrop-filter: blur(8px);
+    }
+
+    .nav-inner {
+      width: min(calc(100% - 48px), var(--max));
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    /*
+      NEW AZA LOGO
+      Minimalist shopping bag SVG
+    */
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border: 1px solid rgba(242,238,230,.3);
+      display: grid;
+      place-items: center;
+      transition:
+        transform .5s var(--ease),
+        border-color .4s ease,
+        background .4s ease;
+    }
+
+    .brand-mark:hover {
+      transform: rotate(-4deg) scale(1.06);
+      border-color: var(--accent);
+      background: rgba(217,197,162,.06);
+    }
+
+    .bag-icon {
+      width: 21px;
+      height: 23px;
+      overflow: visible;
+    }
+
+    .bag-icon .bag-body {
+      fill: none;
+      stroke: var(--white);
+      stroke-width: 1.25;
+    }
+
+    .bag-icon .bag-handle {
+      fill: none;
+      stroke: var(--white);
+      stroke-width: 1.25;
+      stroke-linecap: round;
+    }
+
+    .bag-icon .bag-detail {
+      fill: none;
+      stroke: var(--accent);
+      stroke-width: .9;
+      stroke-linecap: round;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 34px;
+      font-family: "DM Mono", monospace;
+      font-size: 10px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .nav-links a {
+      position: relative;
+      transition: color .3s ease;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -7px;
+      width: 100%;
+      height: 1px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform .45s var(--ease);
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--white);
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    .menu-button {
+      display: none;
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--line);
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .menu-button svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .mobile-menu {
+      position: fixed;
+      inset: 0;
+      z-index: 1100;
+      background: rgba(17,17,15,.98);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: .5s var(--ease);
+    }
+
+    .mobile-menu.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .mobile-menu-inner {
+      text-align: center;
+    }
+
+    .mobile-menu a {
+      display: block;
+      font-family: "Playfair Display", serif;
+      font-size: clamp(40px, 10vw, 72px);
+      margin: 14px 0;
+      transform: translateY(30px);
+      opacity: 0;
+      transition: .6s var(--ease);
+    }
+
+    .mobile-menu.open a {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .mobile-close {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--line);
+      background: transparent;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+    }
+
+    /* =========================
+       HERO
+    ========================= */
+
+    .hero {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      padding: 150px 0 72px;
+      overflow: hidden;
+    }
+
+    .hero-media {
+      position: absolute;
+      inset: 0;
+    }
+
+    .hero-media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to top, rgba(17,17,15,.92), rgba(17,17,15,.1) 55%, rgba(17,17,15,.4)),
+        linear-gradient(to right, rgba(17,17,15,.48), transparent 65%);
+    }
+
+    .hero-media img {
+      height: 100%;
+      filter: saturate(.72);
+      transform: scale(1.04);
+      animation: heroZoom 8s var(--ease) forwards;
+    }
+
+    @keyframes heroZoom {
+      to {
+        transform: scale(1);
+      }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+    }
+
+    .eyebrow {
+      font-family: "DM Mono", monospace;
+      font-size: 10px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 42px;
+      height: 1px;
+      background: var(--accent);
+      transform-origin: left;
+      transform: scaleX(0);
+      animation: lineIn 1s .6s var(--ease) forwards;
+    }
+
+    @keyframes lineIn {
+      to { transform: scaleX(1); }
+    }
+
+    .hero h1 {
+      font-family: "Playfair Display", serif;
+      font-weight: 400;
+      font-size: clamp(58px, 10vw, 150px);
+      line-height: .88;
+      letter-spacing: -.055em;
+      max-width: 1050px;
+      overflow: hidden;
+    }
+
+    .display-reveal {
+      display: block;
+      overflow: hidden;
+    }
+
+    .display-reveal span {
+      display: block;
+      transform: translateY(110%);
+      opacity: 0;
+      animation: displayIn 1.2s var(--ease) forwards;
+    }
+
+    .display-reveal:nth-child(2) span {
+      animation-delay: .12s;
+    }
+
+    @keyframes displayIn {
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .hero-bottom {
+      margin-top: 46px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 40px;
+    }
+
+    .hero-description {
+      max-width: 430px;
+      color: rgba(242,238,230,.72);
+      font-size: 14px;
+      line-height: 1.8;
+      animation: fadeUp 1s .5s var(--ease) both;
+    }
+
+    .scroll-indicator {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      font-family: "DM Mono", monospace;
+      font-size: 9px;
+      letter-spacing: .15em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 70px;
+      background: linear-gradient(var(--accent), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollPulse {
+      0%,100% { opacity: .3; transform: scaleY(.7); transform-origin: top; }
+      50% { opacity: 1; transform: scaleY(1); }
+    }
+
+    /* =========================
+       GENERAL SECTIONS
+    ========================= */
+
+    section {
+      padding: 140px 0;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 50px;
+      margin-bottom: 70px;
+    }
+
+    .section-label {
+      font-family: "DM Mono", monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .2em;
+      color: var(--accent);
+    }
+
+    .section-title {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(42px, 6vw, 84px);
+      font-weight: 400;
+      line-height: .98;
+      letter-spacing: -.04em;
+      max-width: 760px;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(45px);
+      filter: blur(4px);
+      transition:
+        opacity 1s var(--ease),
+        transform 1s var(--ease),
+        filter 1s var(--ease);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+
+    .paragraph-reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      filter: blur(3px);
+      transition:
+        opacity .9s var(--ease),
+        transform .9s var(--ease),
+        filter .9s var(--ease);
+    }
+
+    .paragraph-reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+
+    /* =========================
+       STORY
+    ========================= */
+
+    .story-grid {
+      display: grid;
+      grid-template-columns: .75fr 1.25fr;
+      gap: 90px;
+      align-items: start;
+    }
+
+    .story-number {
+      font-family: "DM Mono", monospace;
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: .15em;
+    }
+
+    .word-reveal {
+      overflow: hidden;
+    }
+
+    .word-reveal .word {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(110%);
+      filter: blur(5px);
+      transition:
+        opacity .8s var(--ease),
+        transform .8s var(--ease),
+        filter .8s var(--ease);
+      margin-right: .22em;
+    }
+
+    .word-reveal.visible .word {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+
+    .word-reveal.visible .word:nth-child(1) { transition-delay: .02s; }
+    .word-reveal.visible .word:nth-child(2) { transition-delay: .05s; }
+    .word-reveal.visible .word:nth-child(3) { transition-delay: .08s; }
+    .word-reveal.visible .word:nth-child(4) { transition-delay: .11s; }
+    .word-reveal.visible .word:nth-child(5) { transition-delay: .14s; }
+    .word-reveal.visible .word:nth-child(6) { transition-delay: .17s; }
+    .word-reveal.visible .word:nth-child(7) { transition-delay: .20s; }
+    .word-reveal.visible .word:nth-child(8) { transition-delay: .23s; }
+    .word-reveal.visible .word:nth-child(9) { transition-delay: .26s; }
+    .word-reveal.visible .word:nth-child(10) { transition-delay: .29s; }
+    .word-reveal.visible .word:nth-child(11) { transition-delay: .32s; }
+    .word-reveal.visible .word:nth-child(12) { transition-delay: .35s; }
+
+    .story-copy {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(30px, 4vw, 58px);
+      line-height: 1.08;
+      letter-spacing: -.025em;
+    }
+
+    .story-subcopy {
+      max-width: 580px;
+      margin-top: 38px;
+      font-size: 14px;
+      line-height: 1.9;
+      color: var(--muted);
+    }
+
+    /* =========================
+       BENTO
+    ========================= */
+
+    .bento {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-auto-rows: 280px;
+      gap: 12px;
+    }
+
+    .bento-card {
+      position: relative;
+      overflow: hidden;
+      background: var(--surface);
+    }
+
+    .bento-card:nth-child(1) { grid-column: span 7; grid-row: span 2; }
+    .bento-card:nth-child(2) { grid-column: span 5; }
+    .bento-card:nth-child(3) { grid-column: span 5; }
+    .bento-card:nth-child(4) { grid-column: span 4; }
+    .bento-card:nth-child(5) { grid-column: span 8; }
+
+    .bento-card img {
+      height: 100%;
+      transition: transform 1s var(--ease), filter 1s ease;
+      filter: saturate(.72);
+    }
+
+    .bento-card:hover img {
+      transform: scale(1.055);
+      filter: saturate(1);
+    }
+
+    .bento-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: flex-end;
+      padding: 25px;
+      background: linear-gradient(transparent 40%, rgba(0,0,0,.65));
+    }
+
+    .bento-label {
+      font-family: "DM Mono", monospace;
+      font-size: 10px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+
+    /* =========================
+       COLLECTION SHOWCASE
+    ========================= */
+
+    .showcase {
+      background: var(--surface);
+    }
+
+    .showcase-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 48px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .collection-tab {
+      position: relative;
+      padding: 15px 20px;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font-family: "DM Mono", monospace;
+      font-size: 10px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: color .3s ease;
+    }
+
+    .collection-tab::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -1px;
+      width: 100%;
+      height: 1px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transition: transform .5s var(--ease);
+    }
+
+    .collection-tab:hover,
+    .collection-tab.active {
+      color: var(--white);
+    }
+
+    .collection-tab.active::after {
+      transform: scaleX(1);
+    }
+
+    .showcase-grid {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      min-height: 670px;
+      gap: 70px;
+      align-items: center;
+    }
+
+    .showcase-image {
+      height: 670px;
+      overflow: hidden;
+      background: var(--surface-2);
+    }
+
+    .showcase-image img {
+      height: 100%;
+      transition:
+        opacity .45s ease,
+        transform 1s var(--ease);
+      filter: saturate(.72);
+    }
+
+    .showcase-image.switching img {
+      opacity: 0;
+      transform: scale(1.035);
+    }
+
+    .showcase-copy {
+      max-width: 520px;
+    }
+
+    .collection-kicker {
+      font-family: "DM Mono", monospace;
+      color: var(--accent);
+      font-size: 10px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      margin-bottom: 25px;
+    }
+
+    .collection-title {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(48px, 6vw, 86px);
+      font-weight: 400;
+      line-height: .92;
+      letter-spacing: -.045em;
+      margin-bottom: 30px;
+    }
+
+    .collection-title .title-line {
+      display: block;
+      overflow: hidden;
+    }
+
+    .collection-title .title-word {
+      display: block;
+      transform: translateY(110%);
+      opacity: 0;
+      transition:
+        transform .75s var(--ease),
+        opacity .75s var(--ease);
+    }
+
+    .collection-title.show .title-word:nth-child(1) {
+      transform: translateY(0);
+      opacity: 1;
+      transition-delay: .05s;
+    }
+
+    .collection-title.show .title-word:nth-child(2) {
+      transform: translateY(0);
+      opacity: 1;
+      transition-delay: .14s;
+    }
+
+    .showcase-description {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.9;
+      max-width: 470px;
+      margin-bottom: 35px;
+    }
+
+    .collection-meta {
+      border-top: 1px solid var(--line);
+    }
+
+    .collection-meta-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 15px 0;
+      border-bottom: 1px solid var(--line);
+      font-family: "DM Mono", monospace;
+      font-size: 9px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .collection-meta-row span:last-child {
+      color: var(--muted);
+      text-align: right;
+    }
+
+    /* =========================
+       METRICS
+    ========================= */
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .chart {
+      position: relative;
+      height: 360px;
+      border-bottom: 1px solid var(--line);
+      border-left: 1px solid var(--line);
+      overflow: hidden;
+    }
+
+    .chart-grid {
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          transparent 0,
+          transparent 71px,
+          rgba(242,238,230,.06) 72px
+        );
+    }
+
+    .chart svg {
+      position: absolute;
+      inset: 20px;
+      width: calc(100% - 40px);
+      height: calc(100% - 40px);
+      overflow: visible;
+    }
+
+    .chart-path {
+      fill: none;
+      stroke: var(--accent);
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 1000;
+      transition: stroke-dashoffset 2s var(--ease);
+    }
+
+    .chart.visible .chart-path {
+      stroke-dashoffset: 0;
+    }
+
+    .chart-dot {
+      fill: var(--white);
+      opacity: 0;
+      transform-box: fill-box;
+      transform-origin: center;
+      transition: opacity .5s ease;
+    }
+
+    .chart.visible .chart-dot {
+      opacity: 1;
+    }
+
+    .metrics-list {
+      border-top: 1px solid var(--line);
+    }
+
+    .metric {
+      padding: 27px 0;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 20px;
+    }
+
+    .metric-number {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(48px, 5vw, 75px);
+      line-height: .8;
+      font-weight: 400;
+    }
+
+    .metric-label {
+      max-width: 150px;
+      font-family: "DM Mono", monospace;
+      font-size: 9px;
+      line-height: 1.5;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: right;
+    }
+
+    /* =========================
+       MARQUEE
+    ========================= */
+
+    .marquee {
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      overflow: hidden;
+      padding: 25px 0;
+    }
+
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marquee 25s linear infinite;
+    }
+
+    .marquee-item {
+      display: flex;
+      align-items: center;
+      gap: 45px;
+      padding-right: 45px;
+      white-space: nowrap;
+      font-family: "Playfair Display", serif;
+      font-size: clamp(28px, 4vw, 55px);
+      color: rgba(242,238,230,.75);
+    }
+
+    .marquee-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    @keyframes marquee {
+      to { transform: translateX(-50%); }
+    }
+
+    /* =========================
+       SOCIAL PROOF
+    ========================= */
+
+    .testimonials {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .testimonial {
+      padding: 35px;
+      background: var(--surface);
+      min-height: 330px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform .6s var(--ease), background .5s ease;
+    }
+
+    .testimonial:hover {
+      transform: translateY(-8px);
+      background: var(--surface-2);
+    }
+
+    .quote-mark {
+      font-family: "Playfair Display", serif;
+      font-size: 50px;
+      line-height: .5;
+      color: var(--accent);
+    }
+
+    .quote {
+      font-family: "Playfair Display", serif;
+      font-size: 24px;
+      line-height: 1.25;
+    }
+
+    .testimonial-author {
+      font-family: "DM Mono", monospace;
+      font-size: 9px;
+      color: var(--muted);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    /* =========================
+       CTA
+    ========================= */
+
+    .cta {
+      position: relative;
+      min-height: 720px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .cta-image {
+      position: absolute;
+      inset: 0;
+    }
+
+    .cta-image::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(17,17,15,.9), rgba(17,17,15,.3)),
+        linear-gradient(0deg, rgba(17,17,15,.7), transparent);
+    }
+
+    .cta-image img {
+      height: 100%;
+      filter: saturate(.6);
+    }
+
+    .cta-content {
+      position: relative;
+      z-index: 2;
+      max-width: 850px;
+    }
+
+    .cta-title {
+      font-family: "Playfair Display", serif;
+      font-weight: 400;
+      font-size: clamp(55px, 8vw, 115px);
+      line-height: .9;
+      letter-spacing: -.05em;
+      margin: 30px 0 40px;
+    }
+
+    .cta-line {
+      display: block;
+      overflow: hidden;
+    }
+
+    .cta-line span {
+      display: block;
+      transform: translateY(110%);
+      opacity: 0;
+      transition: transform .9s var(--ease), opacity .9s var(--ease);
+    }
+
+    .cta-title.visible .cta-line:nth-child(1) span {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .cta-title.visible .cta-line:nth-child(2) span {
+      transform: translateY(0);
+      opacity: 1;
+      transition-delay: .1s;
+    }
+
+    .cta-title.visible .cta-line:nth-child(3) span {
+      transform: translateY(0);
+      opacity: 1;
+      transition-delay: .2s;
+    }
+
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 20px;
+      border: 1px solid rgba(242,238,230,.5);
+      padding: 16px 22px;
+      font-family: "DM Mono", monospace;
+      font-size: 10px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      transition:
+        background .4s ease,
+        color .4s ease,
+        transform .4s var(--ease);
+    }
+
+    .cta-button:hover {
+      background: var(--white);
+      color: var(--bg);
+      transform: translateY(-3px);
+    }
+
+    .cta-button svg {
+      width: 15px;
+      transition: transform .4s var(--ease);
+    }
+
+    .cta-button:hover svg {
+      transform: translateX(5px);
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+      padding: 75px 0 30px;
+      background: var(--surface);
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.3fr .7fr .7fr;
+      gap: 60px;
+      padding-bottom: 70px;
+    }
+
+    .footer-brand {
+      font-family: "Playfair Display", serif;
+      font-size: 55px;
+      line-height: 1;
+      margin-bottom: 22px;
+    }
+
+    .footer-copy {
+      max-width: 370px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .footer-column h4 {
+      font-family: "DM Mono", monospace;
+      color: var(--accent);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: .15em;
+      margin-bottom: 22px;
+    }
+
+    .footer-column a {
+      display: block;
+      margin-bottom: 12px;
+      font-size: 13px;
+      color: var(--muted);
+      transition: color .3s ease, transform .3s ease;
+    }
+
+    .footer-column a:hover {
+      color: var(--white);
+      transform: translateX(4px);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid var(--line);
+      padding-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      color: var(--muted);
+      font-family: "DM Mono", monospace;
+      font-size: 8px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    /* =========================
+       NEWSLETTER
+    ========================= */
+
+    .newsletter {
+      margin-top: 30px;
+      display: flex;
+      border-bottom: 1px solid var(--line);
+      max-width: 400px;
+    }
+
+    .newsletter input {
+      width: 100%;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--white);
+      padding: 13px 0;
+      font-size: 12px;
+    }
+
+    .newsletter button {
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+      color: var(--accent);
+      font-family: "DM Mono", monospace;
+      font-size: 9px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    /* =========================
+       ANIMATIONS
+    ========================= */
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(25px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 900px) {
+      .nav-links {
+        display: none;
+      }
+
+      .menu-button {
+        display: grid;
+        place-items: center;
+      }
+
+      .story-grid,
+      .metrics-grid,
+      .showcase-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .showcase-grid {
+        gap: 45px;
+      }
+
+      .showcase-image {
+        height: 580px;
+      }
+
+      .bento {
+        grid-template-columns: repeat(2, 1fr);
+        grid-auto-rows: 300px;
+      }
+
+      .bento-card:nth-child(1),
+      .bento-card:nth-child(2),
+      .bento-card:nth-child(3),
+      .bento-card:nth-child(4),
+      .bento-card:nth-child(5) {
+        grid-column: span 1;
+        grid-row: span 1;
+      }
+
+      .bento-card:nth-child(1) {
+        grid-column: span 2;
+      }
+
+      .bento-card:nth-child(5) {
+        grid-column: span 2;
+      }
+
+      .testimonials {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-top {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .footer-top > div:first-child {
+        grid-column: span 2;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .container,
+      .nav-inner {
+        width: min(calc(100% - 30px), var(--max));
+      }
+
+      section {
+        padding: 90px 0;
+      }
+
+      .hero {
+        min-height: 90vh;
+        padding-bottom: 45px;
+      }
+
+      .hero h1 {
+        font-size: clamp(54px, 17vw, 90px);
+      }
+
+      .hero-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .scroll-indicator {
+        display: none;
+      }
+
+      .section-header {
+        display: block;
+        margin-bottom: 45px;
+      }
+
+      .section-title {
+        margin-top: 20px;
+      }
+
+      .story-grid {
+        gap: 45px;
+      }
+
+      .bento {
+        grid-template-columns: 1fr;
+        grid-auto-rows: 300px;
+      }
+
+      .bento-card:nth-child(1),
+      .bento-card:nth-child(2),
+      .bento-card:nth-child(3),
+      .bento-card:nth-child(4),
+      .bento-card:nth-child(5) {
+        grid-column: span 1;
+      }
+
+      .showcase-tabs {
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+
+      .showcase-tabs::-webkit-scrollbar {
+        display: none;
+      }
+
+      .collection-tab {
+        flex: 0 0 auto;
+      }
+
+      .showcase-image {
+        height: 470px;
+      }
+
+      .metrics-grid {
+        gap: 55px;
+      }
+
+      .chart {
+        height: 260px;
+      }
+
+      .footer-top {
+        grid-template-columns: 1fr;
+        gap: 45px;
+      }
+
+      .footer-top > div:first-child {
+        grid-column: auto;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <!-- PRELOADER -->
+
+  <div class="preloader" id="preloader">
+    <div class="loader-inner">
+      <div class="loader-top">
+        <span>Aza Fashions</span>
+        <span id="loaderPercent">0%</span>
+      </div>
+      <div class="loader-bar">
+        <div class="loader-progress" id="loaderProgress"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAVIGATION -->
+
+  <nav class="nav">
+    <div class="nav-inner">
+
+```
+  <a href="#top" class="brand">
+    <span class="brand-mark">
+
+      <!-- PREMIUM SHOPPING BAG LOGO -->
+      <svg
+        class="bag-icon"
+        viewBox="0 0 24 26"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-label="Aza Fashions"
+      >
+        <path
+          class="bag-body"
+          d="M4.2 8.2H19.8L18.55 23H5.45L4.2 8.2Z"
+        />
+
+        <path
+          class="bag-handle"
+          d="M8 8.2V6.2C8 3.85 9.35 2.5 12 2.5C14.65 2.5 16 3.85 16 6.2V8.2"
+        />
+
+        <path
+          class="bag-detail"
+          d="M8.2 12.3H15.8"
+        />
+
+        <path
+          class="bag-detail"
+          d="M9.4 15.5H14.6"
+        />
+      </svg>
+
+    </span>
+
+    <span>AZA</span>
+  </a>
+
+  <div class="nav-links">
+    <a href="#house">The House</a>
+    <a href="#collections">Collections</a>
+    <a href="#references">References</a>
+    <a href="#contact">Contact</a>
+  </div>
+
+  <button class="menu-button" id="menuButton" aria-label="Open menu">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M4 8H20M4 16H20"
+            stroke="currentColor"
+            stroke-width="1.3"
+            stroke-linecap="round"/>
+    </svg>
+  </button>
+
+</div>
+```
+
+  </nav>
+
+  <!-- MOBILE MENU -->
+
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-close" id="mobileClose" aria-label="Close menu">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none">
+        <path d="M6 6L18 18M18 6L6 18"
+              stroke="currentColor"
+              stroke-width="1.3"
+              stroke-linecap="round"/>
+      </svg>
+    </button>
+
+```
+<div class="mobile-menu-inner">
+  <a href="#house">The House</a>
+  <a href="#collections">Collections</a>
+  <a href="#references">References</a>
+  <a href="#contact">Contact</a>
+</div>
+```
+
+  </div>
+
+  <main id="top">
+
+```
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-media">
+    <img
+      src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=2200&q=90"
+      alt="Luxury fashion editorial"
+    />
+  </div>
+
+  <div class="hero-content container">
+    <div class="eyebrow">
+      Aza Fashions
+    </div>
+
+    <h1>
+      <span class="display-reveal">
+        <span>Dress Beyond</span>
+      </span>
+
+      <span class="display-reveal">
+        <span>Ordinary.</span>
+      </span>
+    </h1>
+
+    <div class="hero-bottom">
+      <p class="hero-description">
+        A contemporary expression of Indian luxury, where exceptional
+        design, modern silhouettes and individual identity meet.
+      </p>
+
+      <div class="scroll-indicator">
+        <span>Scroll</span>
+        <span class="scroll-line"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THE HOUSE -->
+<section id="house">
+  <div class="container">
+
+    <div class="section-header reveal">
+      <span class="section-label">01 / The House</span>
+      <h2 class="section-title">
+        Luxury is not excess.
+        It is intention.
+      </h2>
+    </div>
+
+    <div class="story-grid">
+
+      <div class="story-number reveal">
+        AZA / EST. 2005
+      </div>
+
+      <div>
+        <div
+          class="story-copy word-reveal"
+          data-text="A new language of fashion shaped by individuality, culture and modern luxury."
+        ></div>
+
+        <p class="story-subcopy paragraph-reveal">
+          Aza Fashions is imagined as a destination where contemporary
+          Indian fashion meets a global perspective. Every silhouette,
+          texture and detail is selected to create an experience that
+          feels considered rather than excessive.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- BENTO -->
+<section>
+  <div class="container">
+
+    <div class="section-header reveal">
+      <span class="section-label">02 / Perspective</span>
+      <h2 class="section-title">
+        Designed for the
+        discerning eye.
+      </h2>
+    </div>
+
+    <div class="bento">
+
+      <article class="bento-card reveal">
+        <img
+          src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=1400&q=90"
+          alt="Fashion editorial"
+        />
+        <div class="bento-overlay">
+          <span class="bento-label">Editorial Form</span>
+        </div>
+      </article>
+
+      <article class="bento-card reveal">
+        <img
+          src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1000&q=90"
+          alt="Contemporary clothing"
+        />
+        <div class="bento-overlay">
+          <span class="bento-label">Contemporary</span>
+        </div>
+      </article>
+
+      <article class="bento-card reveal">
+        <img
+          src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=1000&q=90"
+          alt="Luxury fashion"
+        />
+        <div class="bento-overlay">
+          <span class="bento-label">Modern Luxury</span>
+        </div>
+      </article>
+
+      <article class="bento-card reveal">
+        <img
+          src="https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?auto=format&fit=crop&w=1000&q=90"
+          alt="Fashion collection"
+        />
+        <div class="bento-overlay">
+          <span class="bento-label">Craft</span>
+        </div>
+      </article>
+
+      <article class="bento-card reveal">
+        <img
+          src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1400&q=90"
+          alt="Designer clothing"
+        />
+        <div class="bento-overlay">
+          <span class="bento-label">Individuality</span>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- COLLECTION SHOWCASE -->
+<section class="showcase" id="collections">
+  <div class="container">
+
+    <div class="section-header reveal">
+      <span class="section-label">03 / Collections</span>
+
+      <h2 class="section-title">
+        Three expressions.
+        One identity.
+      </h2>
+    </div>
+
+    <div class="showcase-tabs">
+
+      <button
+        class="collection-tab active"
+        data-collection="evening"
+        type="button"
+      >
+        Evening
+      </button>
+
+      <button
+        class="collection-tab"
+        data-collection="contemporary"
+        type="button"
+      >
+        Contemporary
+      </button>
+
+      <button
+        class="collection-tab"
+        data-collection="statement"
+        type="button"
+      >
+        Statement
+      </button>
+
+    </div>
+
+    <div class="showcase-grid">
+
+      <div class="showcase-image" id="showcaseImage">
+        <img
+          id="collectionImage"
+          src="https://images.unsplash.com/photo-1566206091558-7f218b696731?auto=format&fit=crop&w=1500&q=90"
+          alt="Evening collection"
+        />
+      </div>
+
+      <div class="showcase-copy">
+
+        <div class="collection-kicker" id="collectionKicker">
+          Evening / 01
+        </div>
+
+        <h3 class="collection-title show" id="collectionTitle">
+          <span class="title-line">
+            <span class="title-word">After</span>
+          </span>
+          <span class="title-line">
+            <span class="title-word">Dark</span>
+          </span>
+        </h3>
+
+        <!-- IMPORTANT:
+             The missing ID that caused the original tab error
+             has been added here. -->
+        <p
+          class="showcase-description paragraph-reveal visible"
+          id="collectionDescription"
+        >
+          Sculptural evening silhouettes designed for entrances that
+          deserve to be remembered. Rich textures, precise tailoring and
+          a refined sense of drama define the collection.
+        </p>
+
+        <div class="collection-meta">
+
+          <div class="collection-meta-row">
+            <span>Direction</span>
+            <span id="collectionDirection">
+              Refined / Dramatic
+            </span>
+          </div>
+
+          <div class="collection-meta-row">
+            <span>Silhouette</span>
+            <span id="collectionSilhouette">
+              Sculptural
+            </span>
+          </div>
+
+          <div class="collection-meta-row">
+            <span>Character</span>
+            <span id="collectionCharacter">
+              Evening Luxury
+            </span>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- METRICS -->
+<section id="references">
+  <div class="container">
+
+    <div class="section-header reveal">
+      <span class="section-label">04 / Perspective Data</span>
+
+      <h2 class="section-title">
+        A visual reading
+        of the supplied references.
+      </h2>
+    </div>
+
+    <div class="metrics-grid">
+
+      <div class="chart reveal" id="chart">
+        <div class="chart-grid"></div>
+
+        <svg viewBox="0 0 700 300" preserveAspectRatio="none">
+          <path
+            class="chart-path"
+            d="M0 245
+               C80 220, 110 180, 175 205
+               C240 230, 280 120, 345 145
+               C410 170, 445 105, 505 125
+               C570 145, 610 70, 700 55"
+          />
+
+          <circle class="chart-dot" cx="0" cy="245" r="4"/>
+          <circle class="chart-dot" cx="175" cy="205" r="4"/>
+          <circle class="chart-dot" cx="345" cy="145" r="4"/>
+          <circle class="chart-dot" cx="505" cy="125" r="4"/>
+          <circle class="chart-dot" cx="700" cy="55" r="4"/>
+        </svg>
+      </div>
+
+      <div class="metrics-list">
+
+        <div class="metric reveal">
+          <div class="metric-number">
+            <span class="counter" data-value="4.5">0</span>
+          </div>
+          <div class="metric-label">
+            Reference rating
+          </div>
+        </div>
+
+        <div class="metric reveal">
+          <div class="metric-number">
+            <span class="counter" data-value="68">0</span>
+          </div>
+          <div class="metric-label">
+            Reviews in supplied reference
+          </div>
+        </div>
+
+        <div class="metric reveal">
+          <div class="metric-number">
+            <span class="counter" data-value="159">0</span>
+          </div>
+          <div class="metric-label">
+            Additional reference reviews
+          </div>
+        </div>
+
+        <div class="metric reveal">
+          <div class="metric-number">
+            <span class="counter" data-value="100">0</span>
+            <span>%</span>
+          </div>
+          <div class="metric-label">
+            Commitment to detail
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee">
+  <div class="marquee-track">
+
+    <div class="marquee-item">
+      Aza Fashions
+      <span class="marquee-dot"></span>
+      Modern Luxury
+      <span class="marquee-dot"></span>
+      Contemporary India
+      <span class="marquee-dot"></span>
+    </div>
+
+    <div class="marquee-item">
+      Aza Fashions
+      <span class="marquee-dot"></span>
+      Modern Luxury
+      <span class="marquee-dot"></span>
+      Contemporary India
+      <span class="marquee-dot"></span>
+    </div>
+
+  </div>
+</div>
+
+<!-- SOCIAL PROOF -->
+<section>
+  <div class="container">
+
+    <div class="section-header reveal">
+      <span class="section-label">05 / Social Proof</span>
+
+      <h2 class="section-title">
+        Fashion should
+        feel personal.
+      </h2>
+    </div>
+
+    <div class="testimonials">
+
+      <article class="testimonial reveal">
+        <div class="quote-mark">“</div>
+
+        <p class="quote">
+          The most compelling pieces are the ones that feel impossible
+          to separate from the person wearing them.
+        </p>
+
+        <div class="testimonial-author">
+          Editorial Perspective / 01
+        </div>
+      </article>
+
+      <article class="testimonial reveal">
+        <div class="quote-mark">“</div>
+
+        <p class="quote">
+          Modern luxury is about restraint, confidence and details that
+          reveal themselves slowly.
+        </p>
+
+        <div class="testimonial-author">
+          Editorial Perspective / 02
+        </div>
+      </article>
+
+      <article class="testimonial reveal">
+        <div class="quote-mark">“</div>
+
+        <p class="quote">
+          A strong silhouette does not follow the moment. It creates
+          one.
+        </p>
+
+        <div class="testimonial-author">
+          Editorial Perspective / 03
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="contact">
+
+  <div class="cta-image">
+    <img
+      src="https://images.unsplash.com/photo-1485230895905-ec40ba36b9bc?auto=format&fit=crop&w=2200&q=90"
+      alt="Luxury fashion"
+    />
+  </div>
+
+  <div class="container">
+    <div class="cta-content">
+
+      <div class="eyebrow">
+        The next chapter
+      </div>
+
+      <h2 class="cta-title" id="ctaTitle">
+        <span class="cta-line">
+          <span>Your next</span>
+        </span>
+
+        <span class="cta-line">
+          <span>signature</span>
+        </span>
+
+        <span class="cta-line">
+          <span>begins here.</span>
+        </span>
+      </h2>
+
+      <a href="#collections" class="cta-button">
+        Explore Collections
+
+        <svg viewBox="0 0 24 24" fill="none">
+          <path
+            d="M5 12H19M13 6L19 12L13 18"
+            stroke="currentColor"
+            stroke-width="1.3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </a>
+
+    </div>
+  </div>
+</section>
+```
+
+  </main>
+
+  <!-- FOOTER -->
+
+  <footer>
+    <div class="container">
+
+```
+  <div class="footer-top">
+
+    <div>
+      <div class="footer-brand">
+        AZA
+      </div>
+
+      <p class="footer-copy">
+        A contemporary fashion experience shaped around individuality,
+        modern luxury and considered design.
+      </p>
+
+      <form class="newsletter" id="newsletter">
+        <input
+          type="email"
+          placeholder="Your email address"
+          aria-label="Email address"
+          required
+        />
+
+        <button type="submit">
+          Join
+        </button>
+      </form>
+    </div>
+
+    <div class="footer-column">
+      <h4>Explore</h4>
+      <a href="#house">The House</a>
+      <a href="#collections">Collections</a>
+      <a href="#references">References</a>
+      <a href="#contact">Contact</a>
+    </div>
+
+    <div class="footer-column">
+      <h4>Connect</h4>
+      <a href="#">Instagram</a>
+      <a href="#">Pinterest</a>
+      <a href="#">LinkedIn</a>
+      <a href="#">Email</a>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <span>© 2026 Aza Fashions</span>
+    <span>Designed Beyond Ordinary</span>
+  </div>
+
+</div>
+```
+
+  </footer>
+
+  <script>
+
+    /* ==========================================
+       PRELOADER
+    ========================================== */
+
+    const preloader = document.getElementById("preloader");
+    const loaderProgress = document.getElementById("loaderProgress");
+    const loaderPercent = document.getElementById("loaderPercent");
+
+    let progress = 0;
+
+    const loaderTimer = setInterval(() => {
+
+      progress += Math.floor(Math.random() * 7) + 3;
+
+      if (progress >= 100) {
+        progress = 100;
+        clearInterval(loaderTimer);
+
+        setTimeout(() => {
+          preloader.classList.add("done");
+        }, 400);
+      }
+
+      loaderProgress.style.width = progress + "%";
+      loaderPercent.textContent = progress + "%";
+
+    }, 80);
+
+
+    /* ==========================================
+       MOBILE MENU
+    ========================================== */
+
+    const menuButton = document.getElementById("menuButton");
+    const mobileMenu = document.getElementById("mobileMenu");
+    const mobileClose = document.getElementById("mobileClose");
+
+    menuButton.addEventListener("click", () => {
+      mobileMenu.classList.add("open");
+      document.body.style.overflow = "hidden";
+    });
+
+    mobileClose.addEventListener("click", () => {
+      mobileMenu.classList.remove("open");
+      document.body.style.overflow = "";
+    });
+
+    document.querySelectorAll(".mobile-menu a").forEach(link => {
+      link.addEventListener("click", () => {
+        mobileMenu.classList.remove("open");
+        document.body.style.overflow = "";
+      });
+    });
+
+
+    /* ==========================================
+       GENERIC SCROLL REVEALS
+    ========================================== */
+
+    const revealObserver = new IntersectionObserver(
+      entries => {
+
+        entries.forEach(entry => {
+
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            revealObserver.unobserve(entry.target);
+          }
+
+        });
+
+      },
+      {
+        threshold: .14,
+        rootMargin: "0px 0px -50px 0px"
+      }
+    );
+
+    document.querySelectorAll(".reveal").forEach(el => {
+      revealObserver.observe(el);
+    });
+
+
+    /* ==========================================
+       WORD-BY-WORD TEXT ANIMATION
+    ========================================== */
+
+    document.querySelectorAll(".word-reveal").forEach(el => {
+
+      const text = el.dataset.text || "";
+
+      el.innerHTML = text
+        .split(" ")
+        .map(word => `<span class="word">${word}</span>`)
+        .join("");
+
+    });
+
+    const wordObserver = new IntersectionObserver(
+      entries => {
+
+        entries.forEach(entry => {
+
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            wordObserver.unobserve(entry.target);
+          }
+
+        });
+
+      },
+      {
+        threshold: .2
+      }
+    );
+
+    document.querySelectorAll(".word-reveal").forEach(el => {
+      wordObserver.observe(el);
+    });
+
+
+    /* ==========================================
+       PARAGRAPH REVEALS
+    ========================================== */
+
+    const paragraphObserver = new IntersectionObserver(
+      entries => {
+
+        entries.forEach(entry => {
+
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            paragraphObserver.unobserve(entry.target);
+          }
+
+        });
+
+      },
+      {
+        threshold: .2
+      }
+    );
+
+    document.querySelectorAll(".paragraph-reveal").forEach(el => {
+      paragraphObserver.observe(el);
+    });
+
+
+    /* ==========================================
+       COLLECTION SYSTEM
+       FIXED VERSION
+    ========================================== */
+
+    const collectionData = {
+
+      evening: {
+        kicker: "Evening / 01",
+
+        title: [
+          "After",
+          "Dark"
+        ],
+
+        description:
+          "Sculptural evening silhouettes designed for entrances that deserve to be remembered. Rich textures, precise tailoring and a refined sense of drama define the collection.",
+
+        direction:
+          "Refined / Dramatic",
+
+        silhouette:
+          "Sculptural",
+
+        character:
+          "Evening Luxury",
+
+        image:
+          "https://images.unsplash.com/photo-1566206091558-7f218b696731?auto=format&fit=crop&w=1500&q=90",
+
+        alt:
+          "Evening luxury fashion collection"
+      },
+
+      contemporary: {
+        kicker: "Contemporary / 02",
+
+        title: [
+          "Modern",
+          "Motion"
+        ],
+
+        description:
+          "Clean proportions, fluid tailoring and versatile layers create a contemporary wardrobe designed to move naturally between cultures, cities and occasions.",
+
+        direction:
+          "Minimal / Fluid",
+
+        silhouette:
+          "Relaxed Tailoring",
+
+        character:
+          "Modern Everyday",
+
+        image:
+          "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1500&q=90",
+
+        alt:
+          "Contemporary fashion collection"
+      },
+
+      statement: {
+        kicker: "Statement / 03",
+
+        title: [
+          "Make",
+          "Impact"
+        ],
+
+        description:
+          "Expressive forms, unexpected textures and confident proportions for those who see clothing as a statement of identity rather than simply an accessory.",
+
+        direction:
+          "Bold / Expressive",
+
+        silhouette:
+          "Architectural",
+
+        character:
+          "Statement Dressing",
+
+        image:
+          "https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=1500&q=90",
+
+        alt:
+          "Statement fashion collection"
+      }
+
+    };
+
+
+    /* Get all collection elements safely */
+
+    const collectionTabs =
+      document.querySelectorAll(".collection-tab");
+
+    const collectionImage =
+      document.getElementById("collectionImage");
+
+    const showcaseImage =
+      document.getElementById("showcaseImage");
+
+    const collectionKicker =
+      document.getElementById("collectionKicker");
+
+    const collectionTitle =
+      document.getElementById("collectionTitle");
+
+    const collectionDescription =
+      document.getElementById("collectionDescription");
+
+    const collectionDirection =
+      document.getElementById("collectionDirection");
+
+    const collectionSilhouette =
+      document.getElementById("collectionSilhouette");
+
+    const collectionCharacter =
+      document.getElementById("collectionCharacter");
+
+
+    /*
+      Rebuilds the title using the correct collection data.
+      This prevents the previous animation/state conflict.
+    */
+
+    function renderCollectionTitle(titleArray) {
+
+      collectionTitle.classList.remove("show");
+
+      collectionTitle.innerHTML = titleArray
+        .map(word => `
+          <span class="title-line">
+            <span class="title-word">${word}</span>
+          </span>
+        `)
+        .join("");
+
+      requestAnimationFrame(() => {
+
+        requestAnimationFrame(() => {
+          collectionTitle.classList.add("show");
+        });
+
+      });
+
+    }
+
+
+    /*
+      Main collection switch function.
+      Every tab now gets its own complete data object.
+    */
+
+    function switchCollection(key) {
+
+      const data = collectionData[key];
+
+      if (!data) return;
+
+      /* Active tab */
+
+      collectionTabs.forEach(tab => {
+        tab.classList.toggle(
+          "active",
+          tab.dataset.collection === key
+        );
+      });
+
+
+      /* Image transition */
+
+      showcaseImage.classList.add("switching");
+
+
+      setTimeout(() => {
+
+        collectionImage.src = data.image;
+        collectionImage.alt = data.alt;
+
+        collectionKicker.textContent =
+          data.kicker;
+
+        collectionDescription.textContent =
+          data.description;
+
+        collectionDirection.textContent =
+          data.direction;
+
+        collectionSilhouette.textContent =
+          data.silhouette;
+
+        collectionCharacter.textContent =
+          data.character;
+
+        renderCollectionTitle(data.title);
+
+        showcaseImage.classList.remove("switching");
+
+      }, 280);
+
+    }
+
+
+    /*
+      Attach click events.
+    */
+
+    collectionTabs.forEach(tab => {
+
+      tab.addEventListener("click", () => {
+
+        const selectedCollection =
+          tab.dataset.collection;
+
+        switchCollection(selectedCollection);
+
+      });
+
+    });
+
+
+    /* Initial state */
+
+    switchCollection("evening");
+
+
+    /* ==========================================
+       METRIC COUNT-UP
+    ========================================== */
+
+    const counterObserver = new IntersectionObserver(
+      entries => {
+
+        entries.forEach(entry => {
+
+          if (!entry.isIntersecting) return;
+
+          const counter = entry.target;
+          const target = parseFloat(counter.dataset.value);
+
+          const isDecimal =
+            !Number.isInteger(target);
+
+          const duration = 1500;
+          const startTime = performance.now();
+
+          function updateCounter(currentTime) {
+
+            const elapsed = currentTime - startTime;
+            const progress =
+              Math.min(elapsed / duration, 1);
+
+            const eased =
+              1 - Math.pow(1 - progress, 4);
+
+            const value =
+              target * eased;
+
+            counter.textContent =
+              isDecimal
+                ? value.toFixed(1)
+                : Math.floor(value);
+
+            if (progress < 1) {
+              requestAnimationFrame(updateCounter);
+            } else {
+              counter.textContent =
+                isDecimal
+                  ? target.toFixed(1)
+                  : target;
+            }
+
+          }
+
+          requestAnimationFrame(updateCounter);
+
+          counterObserver.unobserve(counter);
+
+        });
+
+      },
+      {
+        threshold: .5
+      }
+    );
+
+    document.querySelectorAll(".counter").forEach(counter => {
+      counterObserver.observe(counter);
+    });
+
+
+    /* ==========================================
+       CHART ANIMATION
+    ========================================== */
+
+    const chart = document.getElementById("chart");
+
+    const chartObserver = new IntersectionObserver(
+      entries => {
+
+        entries.forEach(entry => {
+
+          if (entry.isIntersecting) {
+            chart.classList.add("visible");
+            chartObserver.unobserve(chart);
+          }
+
+        });
+
+      },
+      {
+        threshold: .35
+      }
+    );
+
+    chartObserver.observe(chart);
+
+
+    /* ==========================================
+       CTA TEXT ANIMATION
+    ========================================== */
+
+    const ctaTitle =
+      document.getElementById("ctaTitle");
+
+    const ctaObserver = new IntersectionObserver(
+      entries => {
+
+        entries.forEach(entry => {
+
+          if (entry.isIntersecting) {
+            ctaTitle.classList.add("visible");
+            ctaObserver.unobserve(ctaTitle);
+          }
+
+        });
+
+      },
+      {
+        threshold: .3
+      }
+    );
+
+    ctaObserver.observe(ctaTitle);
+
+
+    /* ==========================================
+       NEWSLETTER
+    ========================================== */
+
+    const newsletter =
+      document.getElementById("newsletter");
+
+    newsletter.addEventListener("submit", event => {
+
+      event.preventDefault();
+
+      const button =
+        newsletter.querySelector("button");
+
+      button.textContent = "Joined";
+
+      newsletter.reset();
+
+      setTimeout(() => {
+        button.textContent = "Join";
+      }, 2200);
+
+    });
+
+
+    /* ==========================================
+       IMAGE ERROR FALLBACK
+    ========================================== */
+
+    document.querySelectorAll("img").forEach(img => {
+
+      img.addEventListener("error", () => {
+
+        img.style.background =
+          "linear-gradient(135deg,#24231f,#11110f)";
+
+      });
+
+    });
+
+
+    /* ==========================================
+       ACTIVE NAVIGATION
+    ========================================== */
+
+    const navLinks =
+      document.querySelectorAll(".nav-links a");
+
+    const sections =
+      document.querySelectorAll("section[id]");
+
+    const navObserver = new IntersectionObserver(
+      entries => {
+
+        entries.forEach(entry => {
+
+          if (!entry.isIntersecting) return;
+
+          navLinks.forEach(link => {
+
+            link.classList.toggle(
+              "active",
+              link.getAttribute("href") ===
+              "#" + entry.target.id
+            );
+
+          });
+
+        });
+
+      },
+      {
+        rootMargin: "-35% 0px -55% 0px"
+      }
+    );
+
+    sections.forEach(section => {
+      navObserver.observe(section);
+    });
+
+
+    /* ==========================================
+       SUBTLE PARAGRAPH HOVER MOVEMENT
+    ========================================== */
+
+    document.querySelectorAll(
+      ".hero-description, .story-subcopy, .showcase-description"
+    ).forEach(element => {
+
+      element.addEventListener("mousemove", event => {
+
+        const rect =
+          element.getBoundingClientRect();
+
+        const x =
+          (event.clientX - rect.left) / rect.width - .5;
+
+        const y =
+          (event.clientY - rect.top) / rect.height - .5;
+
+        element.style.transform =
+          `translate(${x * 4}px, ${y * 4}px)`;
+
+      });
+
+      element.addEventListener("mouseleave", () => {
+
+        element.style.transform = "";
+
+      });
+
+    });
+
+
+    /* ==========================================
+       MAGNETIC CTA
+    ========================================== */
+
+    document.querySelectorAll(
+      ".cta-button, .collection-tab"
+    ).forEach(element => {
+
+      element.addEventListener("mousemove", event => {
+
+        const rect =
+          element.getBoundingClientRect();
+
+        const x =
+          event.clientX - rect.left - rect.width / 2;
+
+        const y =
+          event.clientY - rect.top - rect.height / 2;
+
+        element.style.transform =
+          `translate(${x * .06}px, ${y * .06}px)`;
+
+      });
+
+      element.addEventListener("mouseleave", () => {
+
+        element.style.transform = "";
+
+      });
+
+    });
+
+  </script>
+
+</body>
+</html>
